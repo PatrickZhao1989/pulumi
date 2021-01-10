@@ -140,19 +140,52 @@ const cosmosDbAccount = new azureNext.documentdb.latest.DatabaseAccount("cosmosd
 	},
 })
 
-// Export the CosmosDb Connection String
-//  pulumi.all([sqlServer.name, database.name]).apply(([server, db])
-// azureNext.documentdb.latest.listDatabaseAccountConnectionStrings({
-// 	accountName: cosmosAccountName,
-// 	resourceGroupName: resourceGroupName
-// }).then(
-// 	result => {
-// 		console.log(JSON.stringify(result))
-// 	}
-// );
-// .Tuple(resourceGroup.Name, cosmosAccount.Name)
-// .Apply(names => Output.CreateSecret(GetCosmosDatabaseConnectionString(names.Item1, names.Item2)));
-
+const sqlResourceSqlContainer = new azureNext.documentdb.latest.SqlResourceSqlContainer("sqlResourceSqlContainer", {
+    accountName: cosmosDbAccount.name,
+    containerName: "containerName",
+    databaseName: "databaseName",
+    location: "West US",
+    options: {},
+    resource: {
+        conflictResolutionPolicy: {
+            conflictResolutionPath: "/path",
+            mode: "LastWriterWins",
+        },
+        defaultTtl: 100,
+        id: "containerName",
+        indexingPolicy: {
+            automatic: true,
+            excludedPaths: [],
+            includedPaths: [{
+                indexes: [
+                    {
+                        dataType: "String",
+                        kind: "Range",
+                        precision: -1,
+                    },
+                    {
+                        dataType: "Number",
+                        kind: "Range",
+                        precision: -1,
+                    },
+                ],
+                path: "/*",
+            }],
+            indexingMode: "Consistent",
+        },
+        partitionKey: {
+            kind: "Hash",
+            paths: ["/AccountNumber"],
+        },
+        uniqueKeyPolicy: {
+            uniqueKeys: [{
+                paths: ["/testPath"],
+            }],
+        },
+    },
+    resourceGroupName: "rg1",
+    tags: {},
+});
 
 
 // Backend API
