@@ -1,0 +1,3 @@
+name: MyConnect2
+runtime: nodejs
+description: Pulumi Typescipt for Campion

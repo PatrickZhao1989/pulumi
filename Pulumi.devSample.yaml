@@ -1,0 +1,10 @@
+config:
+  azure:environment: public
+  azure:location: Australia Southeast
+  azure:skip_provider_registration: true
+  azure-nextgen:subscriptionId: {{subscriptionId}}
+  pulumi:template: azure-typescript
+  {ProjectName}:resourceGroupName: {resourceGroupName}
+  {ProjectName}:createdBy: PatrickZhao
+  {ProjectName}:sqlUserName: {sqlUserName}
+  {ProjectName}:sqlPassword: {sqlPassword}
